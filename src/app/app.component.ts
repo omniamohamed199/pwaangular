@@ -62,20 +62,22 @@ export class AppComponent implements OnInit {
       swRegisteration.sync.register('post-data')
     }).catch(err => console.log)
   }
-  upload(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      const filePicker = document.querySelector('input');
-      if (!filePicker || !filePicker.files
-        || filePicker.files.length <= 0) {
-        reject('No file selected.');
-        return;
-      }
-      const myFile = filePicker.files[0];
-      this.convert(myFile);
-      resolve();
-    });
+  upload() {
+    // return new Promise<void>(async (resolve, reject) => {
+
+    //   // resolve();
+    // });
+    const filePicker = document.querySelector('input');
+    if (!filePicker || !filePicker.files
+      || filePicker.files.length <= 0) {
+      return;
+    }
+    const myFile = filePicker.files[0];
+    console.log(myFile)
+    this.convert(myFile);
   }
   convert(myFile: File): Promise<string> {
+    console.log(myFile)
     return new Promise<string>((resolve, reject) => {
       const fileReader = new FileReader();
       if (fileReader && myFile) {
@@ -84,7 +86,7 @@ export class AppComponent implements OnInit {
           const blob = new Blob([new Uint8Array(
             fileReader.result as ArrayBuffer)]);
           const blobURL = URL.createObjectURL(blob);
-          console.log(blobURL)
+          alert(blobURL)
           var myImage = new Image()
           myImage.src = blobURL;
           document.body.appendChild(myImage);
