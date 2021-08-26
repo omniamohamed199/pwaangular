@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 
 @Component({
@@ -11,6 +11,9 @@ import { SwPush, SwUpdate } from '@angular/service-worker';
 export class AppComponent implements OnInit {
   title = 'pwaangular';
   DummyData: any[] = []
+  image: any
+  @ViewChild("img")
+  img!: ElementRef;
   private readonly publicKey = 'BE9VqOG6Kqs-svXBx6GuBAdxKmLaJCuHmqmyZ7Y0XPUQFD4aT1-uw1Qk9NMHIOsJuKBP8AQuVCi1wit6LUmj7i4'
   constructor(private http: HttpClient, swUpdate: SwUpdate, private swpush: SwPush) {
     if (swUpdate.isEnabled) {
@@ -62,42 +65,11 @@ export class AppComponent implements OnInit {
       swRegisteration.sync.register('post-data')
     }).catch(err => console.log)
   }
-  upload() {
-    // return new Promise<void>(async (resolve, reject) => {
 
-    //   // resolve();
-    // });
-    const filePicker = document.querySelector('input');
-    if (!filePicker || !filePicker.files
-      || filePicker.files.length <= 0) {
-      return;
-    }
-    const myFile = filePicker.files[0];
-    console.log(myFile)
-    this.convert(myFile);
+  upload(ev:any) {
+    this.img.nativeElement.src = window.URL.createObjectURL(
+      ev.target.fiels[0]
+    )
+    alert(this.img.nativeElement.src)
   }
-  convert(myFile: File): Promise<string> {
-    console.log(myFile)
-    return new Promise<string>((resolve, reject) => {
-      const fileReader = new FileReader();
-      if (fileReader && myFile) {
-        fileReader.readAsDataURL(myFile);
-        fileReader.onload = () => {
-          const blob = new Blob([new Uint8Array(
-            fileReader.result as ArrayBuffer)]);
-          const blobURL = URL.createObjectURL(blob);
-          alert(blobURL)
-          var myImage = new Image()
-          myImage.src = blobURL;
-          document.body.appendChild(myImage);
-          resolve(blobURL);
-        };
-        fileReader.onerror = (error) => {
-          reject(error);
-        };
-      } else {
-        reject('No file provided');
-      }
-    });
-  }
-}
+}   

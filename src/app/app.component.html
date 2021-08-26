@@ -4,7 +4,8 @@
   <h1>
     All Users Data :))
   </h1>
-  <input type="file" accept="image/x-png,image/jpeg,image/gif" (Change)="upload()" />
+  <input type="file" accept="image/x-png,image/jpeg,image/gif" (change)="upload($event)" />
+  <img [src]="image" #img>
   <ul>
     <li *ngFor="let item of DummyData"><b>Name</b>{{item.name}}</li>
   </ul>
