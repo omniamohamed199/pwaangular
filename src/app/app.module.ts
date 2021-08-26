@@ -19,9 +19,8 @@ import { HttpClientModule } from '@angular/common/http'
     CommonModule,
     FormsModule,
     HttpClientModule,
-    ServiceWorkerModule.register('service-worker.js', {
-      enabled: environment.production,
-    }),
+    ServiceWorkerModule.register('service-worker.js',
+      { enabled: environment.production, scope: './', registrationStrategy: 'registerImmediately' })
 
   ],
   providers: [],

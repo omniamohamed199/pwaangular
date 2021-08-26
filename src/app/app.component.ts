@@ -66,10 +66,10 @@ export class AppComponent implements OnInit {
     }).catch(err => console.log)
   }
 
-  upload(ev:any) {
+  upload(ev: any) {
+    alert(ev.target.files[0])
     this.img.nativeElement.src = window.URL.createObjectURL(
-      ev.target.fiels[0]
+      ev.target.files[0]
     )
-    alert(this.img.nativeElement.src)
   }
-}   
+}
