@@ -71,8 +71,31 @@ export class AppComponent implements OnInit {
         return;
       }
       const myFile = filePicker.files[0];
-      console.log(myFile);
+      this.convert(myFile);
       resolve();
+    });
+  }
+  convert(myFile: File): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const fileReader = new FileReader();
+      if (fileReader && myFile) {
+        fileReader.readAsDataURL(myFile);
+        fileReader.onload = () => {
+          const blob = new Blob([new Uint8Array(
+            fileReader.result as ArrayBuffer)]);
+          const blobURL = URL.createObjectURL(blob);
+          console.log(blobURL)
+          var myImage = new Image()
+          myImage.src = blobURL;
+          document.body.appendChild(myImage);
+          resolve(blobURL);
+        };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      } else {
+        reject('No file provided');
+      }
     });
   }
 }
